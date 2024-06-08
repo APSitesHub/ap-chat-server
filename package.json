@@ -1,6 +1,6 @@
 {
-  "name": "aggregator-chat-back",
-  "version": "1.2.1",
+  "name": "ap-chat-server",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
