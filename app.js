@@ -31,12 +31,10 @@ io.on("connection", (socket) => {
   console.log("user connected");
 
   socket.on("connected:user", (id, room) => {
-    console.log('LIST REQUESTED');
     console.log(35, id);
     console.log(36, room);
-    socket.emit("connected:user", id, room);
-    socket.emit("list", id, room);
-  })
+    socket.broadcast.emit("connected:user", id, room);
+  });
 
   socket.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
