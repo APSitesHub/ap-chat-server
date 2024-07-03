@@ -63,6 +63,12 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("user:banned", userID, userIP);
   });
 
+  socket.on("connected:disconnect", (id, room) => {
+    console.log(67, 'disconnect id', id);
+    console.log(68, 'disconnect room', room);
+    socket.broadcast.emit("connected:disconnect", id, room);
+  });
+
   socket.on("disconnect", () => {
     console.log("🔥: A user disconnected");
   });
