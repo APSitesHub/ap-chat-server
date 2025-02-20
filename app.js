@@ -64,12 +64,32 @@ io.on("connection", (socket) => {
   });
 
   socket.on("connected:disconnect", (id, room) => {
-    console.log(67, 'disconnect id', id);
-    console.log(68, 'disconnect room', room);
+    console.log(67, "disconnect id", id);
+    console.log(68, "disconnect room", room);
     socket.broadcast.emit("connected:disconnect", id, room);
   });
 
-  socket.on("disconnect", () => {
+  socket.on("question:asked", (data) => {
+    console.log(73, data.question);
+    socket.emit("question:input", data.question);
+    socket.broadcast.emit("question:input", data.question);
+  });
+
+  socket.on("answer:given", (data) => {
+    console.log("answer:given", data);
+    socket.emit("answer:acquired", data.answer);
+    socket.broadcast.emit("answer:acquired", data.answer);
+  });
+
+  socket.on("question:closed", (data) => {
+    console.log(73, data.question);
+    socket.emit("question:closeInput", data.question);
+    socket.broadcast.emit("question:closeInput", data.question);
+  });
+
+  socket.on("disconnect", (id, room) => {
+    console.log(73, "disconnect id", id);
+    console.log(74, "disconnect room", room);
     console.log("🔥: A user disconnected");
   });
 });
