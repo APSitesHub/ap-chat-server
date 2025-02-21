@@ -70,9 +70,26 @@ io.on("connection", (socket) => {
   });
 
   socket.on("question:asked", (data) => {
-    console.log(73, data.question);
-    socket.emit("question:input", data.question);
-    socket.broadcast.emit("question:input", data.question);
+    console.log(73, data);
+    switch (data.quizType) {
+      case "input": {
+        socket.emit("question:input", data);
+        socket.broadcast.emit("question:input", data);
+        break;
+      }
+      case "options": {
+        socket.emit("question:options", data);
+        socket.broadcast.emit("question:options", data);
+        break;
+      }
+      case "trueFalse": {
+        socket.emit("question:trueFalse", data);
+        socket.broadcast.emit("question:trueFalse", data);
+        break;
+      }
+      default:
+        break;
+    }
   });
 
   socket.on("answer:given", (data) => {
@@ -82,9 +99,26 @@ io.on("connection", (socket) => {
   });
 
   socket.on("question:closed", (data) => {
-    console.log(73, data.question);
-    socket.emit("question:closeInput", data.question);
-    socket.broadcast.emit("question:closeInput", data.question);
+    console.log(73, data);
+    switch (data.quizType) {
+      case "input": {
+        socket.emit("question:closeInput", data);
+        socket.broadcast.emit("question:closeInput", data);
+        break;
+      }
+      case "options": {
+        socket.emit("question:closeOptions", data);
+        socket.broadcast.emit("question:closeOptions", data);
+        break;
+      }
+      case "trueFalse": {
+        socket.emit("question:closeTrueFalse", data);
+        socket.broadcast.emit("question:closeTrueFalse", data);
+        break;
+      }
+      default:
+        break;
+    }
   });
 
   socket.on("disconnect", (id, room) => {
