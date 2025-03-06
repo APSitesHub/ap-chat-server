@@ -94,8 +94,8 @@ io.on("connection", (socket) => {
 
   socket.on("answer:given", (data) => {
     console.log("answer:given", data);
-    socket.emit("answer:acquired", data.answer);
-    socket.broadcast.emit("answer:acquired", data.answer);
+    socket.emit("answer:acquired", data.answer, data.page);
+    socket.broadcast.emit("answer:acquired", data.answer, data.page);
   });
 
   socket.on("question:closed", (data) => {
