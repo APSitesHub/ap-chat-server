@@ -55,6 +55,11 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("message:deleted", id);
   });
 
+  socket.on("message:delete-all", (page) => {
+    socket.emit("message:delete-all", page);
+    socket.broadcast.emit("message:deleted-all", page);
+  });
+
   socket.on("user:ban", (userID, userIP) => {
     console.log("ban");
     console.log(userID);

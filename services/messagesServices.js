@@ -11,10 +11,13 @@ const updateMessage = async (id, update) =>
 
 const deleteMessage = async (id) => await Messages.findOneAndDelete(id);
 
+const deleteMessagesByPage = async (page) => await Messages.deleteMany(page);
+
 module.exports = {
   getAllMessages,
   getMessagesByLocation,
   newMessage,
   updateMessage,
   deleteMessage,
+  deleteMessagesByPage,
 };
