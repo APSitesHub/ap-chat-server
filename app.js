@@ -126,6 +126,21 @@ io.on("connection", (socket) => {
     }
   });
 
+  // --- Avatar selection flow ---
+  socket.on("avatar:check", (userId) => {
+    socket.broadcast.emit("avatar:check", userId, socket.id);
+  });
+
+  socket.on("avatar:checked", (userId, isChosen, socketId) => {
+    if (!isChosen && socketId) {
+      io.to(socketId).emit("avatar:not-chosen", userId);
+    }
+  });
+
+  socket.on("avatar:selected", (userId, avatarFileName) => {
+    socket.broadcast.emit("avatar:selected", userId, avatarFileName);
+  });
+
   socket.on("disconnect", (id, room) => {
     console.log(73, "disconnect id", id);
     console.log(74, "disconnect room", room);
