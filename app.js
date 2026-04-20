@@ -10,6 +10,10 @@ const { Server } = require("socket.io");
 const app = express();
 
 const router = require("./routes/main");
+const {
+  newFeedback,
+  newWebinar,
+} = require("./services/webinarFeedbacksServices");
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
@@ -92,15 +96,41 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("question:trueFalse", data);
         break;
       }
+      case "feedback": {
+        console.log("feedback", data);
+
+        socket.emit("question:feedback", data);
+        socket.broadcast.emit("question:feedback", data);
+
+        newWebinar({
+          id: data.feedbackId,
+          lesson: data.page,
+          teachername: data.teacherName || "",
+        });
+        break;
+      }
       default:
         break;
     }
   });
 
-  socket.on("answer:given", (data) => {
+  socket.on("answer:given", async (data) => {
     console.log("answer:given", data);
     socket.emit("answer:acquired", data.answer, data.page);
     socket.broadcast.emit("answer:acquired", data.answer, data.page);
+
+    if (data.feedbackID) {
+      try {
+        await newFeedback(data.feedbackID, {
+          lesson: data.lesson,
+          userId: data.userId,
+          rating: data.answer.rating,
+          comment: data.answer.comment,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
   });
 
   socket.on("question:closed", (data) => {
@@ -119,6 +149,11 @@ io.on("connection", (socket) => {
       case "trueFalse": {
         socket.emit("question:closeTrueFalse", data);
         socket.broadcast.emit("question:closeTrueFalse", data);
+        break;
+      }
+      case "feedback": {
+        socket.emit("question:closeFeedback", data);
+        socket.broadcast.emit("question:closeFeedback", data);
         break;
       }
       default:
