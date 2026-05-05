@@ -134,6 +134,14 @@ io.on("connection", (socket) => {
     socket.broadcast.emit('mic:ping', data);
   });
 
+  socket.on('hand:lower', (data) => {
+    socket.broadcast.emit('hand:lower', data);
+  });
+
+  socket.on('hand:raise', (data) => {
+    socket.broadcast.emit('hand:raise', data);
+  });
+
   // --- Avatar selection flow ---
   socket.on("avatar:check", (userId) => {
     socket.broadcast.emit("avatar:check", userId, socket.id);
