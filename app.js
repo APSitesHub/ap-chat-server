@@ -126,6 +126,14 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on('mic:mute', (data) => {
+    socket.broadcast.emit('mic:mute', data);
+  });
+
+  socket.on('mic:ping', (data) => {
+    socket.broadcast.emit('mic:ping', data);
+  });
+
   // --- Avatar selection flow ---
   socket.on("avatar:check", (userId) => {
     socket.broadcast.emit("avatar:check", userId, socket.id);
